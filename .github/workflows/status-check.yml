@@ -1,0 +1,17 @@
+name: test-status-check-functions
+
+on:
+  workflow_dispatch:
+  pull_request:
+
+jobs:
+  success-job:
+    runs-on: ubuntu-latest
+    steps:
+        - name: success
+          run: exit 0
+  failure-job:
+    runs-on: ubuntu-latest
+    steps:
+        - name: failure
+          run: exit 1
