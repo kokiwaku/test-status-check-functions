@@ -71,7 +71,7 @@ jobs:
               run: echo 'in always'
 
     # cancelled
-    success-job-for-canceled:
+    for-canceled:
         runs-on: ubuntu-latest
         steps:
             - name: success
@@ -79,13 +79,3 @@ jobs:
             - name: canceled execute
               if: cancelled()
               run: echo 'in canceled'
-
-    # cancelled
-    failure-job-for-cancelled:
-        runs-on: ubuntu-latest
-        steps:
-            - name: failure
-              run: exit 1
-            - name: cancelled execute
-              if: cancelled()
-              run: echo 'in cancelled'
