@@ -71,7 +71,7 @@ jobs:
               run: echo 'in always'
 
     # cancelled
-    for-canceled:
+    for-canceled-in-canceled:
         runs-on: ubuntu-latest
         steps:
             - name: Wait for 10 seconds
@@ -79,3 +79,19 @@ jobs:
             - name: canceled execute
               if: cancelled()
               run: echo 'in canceled'
+    for-canceled-in-success:
+        runs-on: ubuntu-latest
+        steps:
+            - name: success
+              run: exit 0
+            - name: canceled execute
+              if: !cancelled()
+              run: echo 'in not canceled'
+    for-canceled-in-failure:
+        runs-on: ubuntu-latest
+        steps:
+            - name: failure
+              run: exit 1
+            - name: canceled execute
+              if: !cancelled()
+              run: echo 'in not canceled'
