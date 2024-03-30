@@ -47,3 +47,25 @@ jobs:
               # 前のjobが成功(exit 0)しているので、以下jobは実行されない
               if: failure()
               run: echo 'in failure'
+
+    # always
+    success-job-for-always:
+        runs-on: ubuntu-latest
+        steps:
+            - name: success
+              run: exit 0
+            - name: always execute
+              # 前jobの成否に関係なく実行される
+              if: always()
+              run: echo 'in failure'
+
+    # always
+    failure-job-for-always:
+        runs-on: ubuntu-latest
+        steps:
+            - name: failure
+              run: exit 1
+            - name: always execute
+              # 前jobの成否に関係なく実行される
+              if: always()
+              run: echo 'in failure'
