@@ -57,7 +57,7 @@ jobs:
             - name: always execute
               # 前jobの成否に関係なく実行される
               if: always()
-              run: echo 'in failure'
+              run: echo 'in always'
 
     # always
     failure-job-for-always:
@@ -68,4 +68,4 @@ jobs:
             - name: always execute
               # 前jobの成否に関係なく実行される
               if: always()
-              run: echo 'in failure'
+              run: echo 'in always'
