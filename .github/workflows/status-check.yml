@@ -74,8 +74,8 @@ jobs:
     for-canceled:
         runs-on: ubuntu-latest
         steps:
-            - name: success
-              run: exit 0
+            - name: Wait for 10 seconds
+              run: sleep 10
             - name: canceled execute
               if: cancelled()
               run: echo 'in canceled'
