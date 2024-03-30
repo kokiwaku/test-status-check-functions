@@ -69,3 +69,23 @@ jobs:
               # 前jobの成否に関係なく実行される
               if: always()
               run: echo 'in always'
+
+    # cancelled
+    success-job-for-canceled:
+        runs-on: ubuntu-latest
+        steps:
+            - name: success
+              run: exit 0
+            - name: canceled execute
+              if: cancelled()
+              run: echo 'in canceled'
+
+    # cancelled
+    failure-job-for-cancelled:
+        runs-on: ubuntu-latest
+        steps:
+            - name: failure
+              run: exit 1
+            - name: cancelled execute
+              if: cancelled()
+              run: echo 'in cancelled'
