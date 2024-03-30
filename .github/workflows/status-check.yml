@@ -6,7 +6,7 @@ on:
 
 jobs:
     # success：true
-    success-job:
+    success-job-for-success:
         runs-on: ubuntu-latest
         steps:
             - name: success
@@ -16,7 +16,7 @@ jobs:
               if: success()
               run: echo 'in success'
     # success：false
-    failure-job:
+    failure-job-for-success:
         runs-on: ubuntu-latest
         steps:
             - name: failure
@@ -25,3 +25,25 @@ jobs:
               # 前のjobが失敗(exit 1)しているので、以下jobも実行されない
               if: success()
               run: echo 'in success'
+
+    # failure：true
+    failure-job-for-failure:
+        runs-on: ubuntu-latest
+        steps:
+            - name: failure
+              run: exit 1
+            - name: if failure execute
+              # 前のjobが失敗(exit 1)しているので、以下jobも実行される
+              if: failure()
+              run: echo 'in failure'
+
+    # failure：false
+    success-job-for-failure:
+        runs-on: ubuntu-latest
+        steps:
+            - name: success
+              run: exit 0
+            - name: if failure execute
+              # 前のjobが成功(exit 0)しているので、以下jobは実行されない
+              if: failure()
+              run: echo 'in failure'
