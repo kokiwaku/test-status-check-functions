@@ -19,6 +19,8 @@ jobs:
     steps:
         - name: failure
           run: exit 1
+        - name: success
+          run: exit 0
         - name: if failure execute
           if: failure()
           run: echo 'in failure'
