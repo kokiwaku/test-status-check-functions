@@ -1,17 +1,88 @@
 name: test-status-check-functions
 
 on:
-  workflow_dispatch:
   pull_request:
 
 jobs:
-  success-job:
-    runs-on: ubuntu-latest
-    steps:
-        - name: success
-          run: exit 0
-  failure-job:
-    runs-on: ubuntu-latest
-    steps:
-        - name: failure
-          run: exit 1
+    # success：true
+    success-job-for-success:
+        runs-on: ubuntu-latest
+        steps:
+            - name: success
+              run: exit 0
+            - name: if success execute
+              # 前のjobが成功(exit 0)しているので、以下jobは実行される
+              if: success()
+              run: echo 'in success'
+    # success：false
+    failure-job-for-success:
+        runs-on: ubuntu-latest
+        steps:
+            - name: failure
+              run: exit 1
+            - name: if success execute
+              # 前のjobが失敗(exit 1)しているので、以下jobも実行されない
+              if: success()
+              run: echo 'in success'
+
+    # failure：true
+    failure-job-for-failure:
+        runs-on: ubuntu-latest
+        steps:
+            - name: failure
+              run: exit 1
+            - name: if failure execute
+              # 前のjobが失敗(exit 1)しているので、以下jobも実行される
+              if: failure()
+              run: echo 'in failure'
+
+    # failure：false
+    success-job-for-failure:
+        runs-on: ubuntu-latest
+        steps:
+            - name: success
+              run: exit 0
+            - name: if failure execute
+              # 前のjobが成功(exit 0)しているので、以下jobは実行されない
+              if: failure()
+              run: echo 'in failure'
+
+    # always
+    success-job-for-always:
+        runs-on: ubuntu-latest
+        steps:
+            - name: success
+              run: exit 0
+            - name: always execute
+              # 前jobの成否に関係なく実行される
+              if: always()
+              run: echo 'in always'
+
+    # always
+    failure-job-for-always:
+        runs-on: ubuntu-latest
+        steps:
+            - name: failure
+              run: exit 1
+            - name: always execute
+              # 前jobの成否に関係なく実行される
+              if: always()
+              run: echo 'in always'
+
+    # cancelled
+    for-canceled-1:
+        runs-on: ubuntu-latest
+        steps:
+            - name: canceled execute
+              if: ${{ !cancelled() }}
+              run: |
+                sleep 300
+                echo 'in not canceled'
+    for-canceled-2:
+        runs-on: ubuntu-latest
+        steps:
+            - name: canceled execute
+              if: ${{ always() }}
+              run: |
+                sleep 300
+                echo 'in not canceled'
